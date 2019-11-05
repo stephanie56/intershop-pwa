@@ -21,6 +21,7 @@ import { LoadProductSuccess, LoadProductVariationsSuccess, SelectProduct } from 
 import { shoppingReducers } from 'ish-core/store/shopping/shopping-store.module';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { TestStore, ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { ContentViewcontextContainerComponent } from 'ish-shared/cms/containers/content-viewcontext/content-viewcontext.container';
 import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from 'ish-shared/common/components/loading/loading.component';
 import { RecentlyViewedContainerComponent } from 'ish-shared/recently/containers/recently-viewed/recently-viewed.container';
@@ -58,6 +59,7 @@ describe('Product Page Container', () => {
       declarations: [
         DummyComponent,
         MockComponent(BreadcrumbComponent),
+        MockComponent(ContentViewcontextContainerComponent),
         MockComponent(LoadingComponent),
         MockComponent(ProductBundlePartsComponent),
         MockComponent(ProductDetailComponent),
@@ -106,6 +108,7 @@ describe('Product Page Container', () => {
 
     expect(findAllIshElements(element)).toEqual([
       'ish-breadcrumb',
+      'ish-content-viewcontext',
       'ish-product-detail',
       'ish-product-links-container',
       'ish-recently-viewed-container',

@@ -5,6 +5,11 @@
     <ng-container *ngIf="product$ | async as product">
       <ish-breadcrumb [product]="product" [category]="category$ | async"></ish-breadcrumb>
 
+      <ish-content-viewcontext
+        viewContextId="viewcontext.page.product.pagelet2-ViewContext"
+        [callParameters]="{ ProductBO: product.sku }"
+      ></ish-content-viewcontext>
+
       <ish-product-detail
         [product]="product"
         [price]="price$ | async"
