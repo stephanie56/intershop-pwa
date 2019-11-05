@@ -49,6 +49,7 @@ import { CMSVideoComponent } from './cms/components/cms-video/cms-video.componen
 import { ContentIncludeContainerComponent } from './cms/containers/content-include/content-include.container';
 import { ContentPageletContainerComponent } from './cms/containers/content-pagelet/content-pagelet.container';
 import { ContentSlotContainerComponent } from './cms/containers/content-slot/content-slot.container';
+import { ContentViewcontextContainerComponent } from './cms/containers/content-viewcontext/content-viewcontext.container';
 import { AccordionItemComponent } from './common/components/accordion-item/accordion-item.component';
 import { AccordionComponent } from './common/components/accordion/accordion.component';
 import { BreadcrumbComponent } from './common/components/breadcrumb/breadcrumb.component';
@@ -137,6 +138,7 @@ const declaredComponents = [
   CMSTextComponent,
   CMSVideoComponent,
   ContentSlotContainerComponent,
+  ContentViewcontextContainerComponent,
   FilterCheckboxComponent,
   FilterCollapsableComponent,
   FilterDropdownComponent,
@@ -173,6 +175,7 @@ const exportedComponents = [
   BreadcrumbComponent,
   ContentIncludeContainerComponent,
   ContentPageletContainerComponent,
+  ContentViewcontextContainerComponent,
   ErrorMessageComponent,
   FilterNavigationContainerComponent,
   InfoBoxComponent,
