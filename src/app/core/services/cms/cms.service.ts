@@ -1,7 +1,9 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { ContentPageletEntryPointData } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.interface';
 import { ContentPageletEntryPointMapper } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.mapper';
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
@@ -45,5 +47,30 @@ export class CMSService {
       map(x => this.contentPageletEntryPointMapper.fromData(x)),
       map(({ pageletEntryPoint, pagelets }) => ({ page: pageletEntryPoint, pagelets }))
     );
+  }
+
+  /**
+   * TODO: Get the content for the given Content Page ID.
+   * @param includeId The page ID.
+   * @returns         The content data.
+   */
+  getViewContextContent(
+    viewcontextId: string,
+    callParameters: CallParameters,
+    clientId: string
+  ): Observable<{ entrypoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
+    if (!viewcontextId) {
+      return throwError('getViewContextContent() called without an viewcontextId');
+    }
+
+    let params = new HttpParams();
+    Object.keys(callParameters).forEach(item => (params = params.set(item, callParameters[item])));
+
+    return this.apiService
+      .get<ContentPageletEntryPointData>(`cms/viewcontexts/${viewcontextId}/entrypoint`, { params })
+      .pipe(
+        map(entrypoint => this.contentPageletEntryPointMapper.fromData(entrypoint, clientId)),
+        map(({ pageletEntryPoint, pagelets }) => ({ entrypoint: pageletEntryPoint, pagelets }))
+      );
   }
 }
