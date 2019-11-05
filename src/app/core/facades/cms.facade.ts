@@ -3,9 +3,11 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
+import { CallParameters } from 'ish-core/models/call-parameters/call-parameters.model';
 import { LoadContentInclude, getContentInclude } from 'ish-core/store/content/includes';
 import { getContentPagelet } from 'ish-core/store/content/pagelets';
 import { getContentPageLoading, getSelectedContentPage } from 'ish-core/store/content/pages';
+import { LoadViewContextEntrypoint, getViewcontext } from 'ish-core/store/content/viewcontexts';
 import { getPGID } from 'ish-core/store/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { SfeAdapterService } from 'ish-shared/cms/sfe-adapter/sfe-adapter.service';
@@ -37,5 +39,13 @@ export class CMSFacade {
 
   pagelet$(id: string) {
     return this.store.pipe(select(getContentPagelet(), id));
+  }
+
+  loadViewContext(viewcontextId: string, callParameters: CallParameters, clientId: string) {
+    this.store.dispatch(new LoadViewContextEntrypoint({ viewcontextId, callParameters, clientId }));
+  }
+
+  viewContext$(viewcontextId: string) {
+    return this.store.pipe(select(getViewcontext, viewcontextId));
   }
 }
