@@ -15,6 +15,16 @@
     </div>
     <div class="col-md-9">
       <ish-breadcrumb [category]="category"></ish-breadcrumb>
+
+      <!-- TODO: construction of CategoryRefId needs to be less hacky -->
+      <ish-content-viewcontext
+        viewContextId="viewcontext.page.category.pagelet2-ViewContext"
+        [callParameters]="{
+          CategoryBO: category.id + '@inSPIRED-inTRONICS-' + category.categoryPath[0],
+          CatalogBO: ''
+        }"
+      ></ish-content-viewcontext>
+
       <h1>{{ category.name }}</h1>
       <ish-product-listing-container
         [category]="category"

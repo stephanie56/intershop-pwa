@@ -8,6 +8,7 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { findAllIshElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { ContentViewcontextContainerComponent } from 'ish-shared/cms/containers/content-viewcontext/content-viewcontext.container';
 import { BreadcrumbComponent } from 'ish-shared/common/components/breadcrumb/breadcrumb.component';
 
 import { CategoryListComponent } from '../category-list/category-list.component';
@@ -28,6 +29,7 @@ describe('Category Categories Component', () => {
         MockComponent(BreadcrumbComponent),
         MockComponent(CategoryListComponent),
         MockComponent(CategoryNavigationComponent),
+        MockComponent(ContentViewcontextContainerComponent),
         MockComponent(FaIconComponent),
         MockComponent(NgbCollapse),
       ],

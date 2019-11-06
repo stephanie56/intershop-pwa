@@ -3,6 +3,7 @@ import { Image } from 'ish-core/models/image/image.model';
 import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
 
 export interface Category {
+  id: string;
   uniqueId: string;
 
   categoryPath: string[];

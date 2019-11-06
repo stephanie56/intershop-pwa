@@ -9,6 +9,7 @@ export interface CategoryPathElement {
 }
 
 export interface CategoryData {
+  id: string;
   name: string;
   hasOnlineProducts: boolean;
   hasOnlineSubCategories: boolean;

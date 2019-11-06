@@ -98,6 +98,7 @@ export class CategoryMapper {
       const uniqueId = categoryPath[categoryPath.length - 1];
 
       return {
+        id: categoryData.id,
         uniqueId,
         categoryPath,
         name: categoryData.name,
