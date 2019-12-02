@@ -20,7 +20,7 @@ describe('Server Html', () => {
       url: '**/cms/**',
       status: 200,
       response: {
-        definitionQualifiedName: 'app_sf_responsive_cm:pwa.include.homepage.pagelet2-Include',
+        definitionQualifiedName: 'app_sf_base_cm:pwa.include.homepage.pagelet2-Include',
         displayName: 'PWA Homepage Content',
         link: {
           title: 'pwa.include.homepage.pagelet2-Include',
@@ -29,7 +29,7 @@ describe('Server Html', () => {
         },
         pagelets: [
           {
-            definitionQualifiedName: 'app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component',
+            definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component',
             link: {
               type: 'Link',
               uri: 'inSPIRED-inTRONICS-Site/-/cms/pagelets/test_foo_bar',
@@ -45,7 +45,7 @@ describe('Server Html', () => {
                   <div><a href="page://${_.pageId}">page</a></div>
                   <div><a href="route://${_.route}">route</a></div>
                   <img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`,
-                definitionQualifiedName: 'app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component-HTML',
+                definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component-HTML',
               },
             },
           },

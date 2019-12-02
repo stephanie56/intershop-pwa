@@ -19,7 +19,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.text.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.text.pagelet2-Component',
         class: CMSTextComponent,
       },
       multi: true,
@@ -27,7 +27,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.freeStyle.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component',
         class: CMSFreestyleComponent,
       },
       multi: true,
@@ -35,7 +35,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.container.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.container.pagelet2-Component',
         class: CMSContainerComponent,
       },
       multi: true,
@@ -43,7 +43,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.image.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.image.pagelet2-Component',
         class: CMSImageComponent,
       },
       multi: true,
@@ -51,7 +51,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.imageEnhanced.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.imageEnhanced.pagelet2-Component',
         class: CMSImageEnhancedComponent,
       },
       multi: true,
@@ -59,7 +59,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.carousel.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.carousel.pagelet2-Component',
         class: CMSCarouselComponent,
       },
       multi: true,
@@ -67,7 +67,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.productListManual.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.productListManual.pagelet2-Component',
         class: CMSProductListComponent,
       },
       multi: true,
@@ -75,7 +75,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.video.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.video.pagelet2-Component',
         class: CMSVideoComponent,
       },
       multi: true,
@@ -83,7 +83,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.shopping.staticPage.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.shopping.staticPage.pagelet2-Component',
         class: CMSStaticPageComponent,
       },
       multi: true,
@@ -91,7 +91,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:pagevariant.standard.pagelet2-Pagevariant',
+        definitionQualifiedName: 'app_sf_base_cm:pagevariant.standard.pagelet2-Pagevariant',
         class: CMSStandardPageComponent,
       },
       multi: true,
@@ -99,7 +99,7 @@ import { SfeAdapterService } from './sfe-adapter/sfe-adapter.service';
     {
       provide: CMS_COMPONENT,
       useValue: {
-        definitionQualifiedName: 'app_sf_responsive_cm:component.common.dialog.pagelet2-Component',
+        definitionQualifiedName: 'app_sf_base_cm:component.common.dialog.pagelet2-Component',
         class: CMSDialogComponent,
       },
       multi: true,
