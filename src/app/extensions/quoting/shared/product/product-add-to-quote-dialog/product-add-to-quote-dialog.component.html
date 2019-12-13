@@ -97,6 +97,7 @@
         <button
           *ngIf="quote"
           [routerLink]="'/account/quote-request/' + quote.id"
+          [queryParams]="{ submitted: true }"
           type="submit"
           class="btn btn-primary"
           [disabled]="quote.items.length === 0"

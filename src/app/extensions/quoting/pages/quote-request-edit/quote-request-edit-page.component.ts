@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { debounce, filter, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -21,29 +21,23 @@ export class QuoteRequestEditPageComponent implements OnInit, OnDestroy {
   quoteRequestLoading$: Observable<boolean>;
   quoteRequestError$: Observable<HttpError>;
   user$: Observable<User>;
-
-  submitted = false;
+  submitted$: Observable<boolean>;
 
   private destroy$ = new Subject();
 
-  constructor(private quotingFacade: QuotingFacade, private accountFacade: AccountFacade, private router: Router) {}
+  constructor(
+    private quotingFacade: QuotingFacade,
+    private accountFacade: AccountFacade,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.quote$ = this.quotingFacade.quoteRequest$;
     this.quoteRequestLoading$ = this.quotingFacade.quoteRequestLoading$;
     this.quoteRequestError$ = this.quotingFacade.quoteRequestError$;
     this.user$ = this.accountFacade.user$;
-
-    // reset quote request page if the user routes directly to the quote request after quote request submission
-    this.router.events
-      .pipe(
-        filter(event => event instanceof ActivationEnd && !event.snapshot.queryParamMap.has('submitted')),
-        debounce(() => this.router.events.pipe(filter(event => event instanceof NavigationEnd))),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.submitted = false;
-      });
+    this.submitted$ = this.route.queryParamMap.pipe(map(params => !!params.get('submitted')));
   }
 
   updateQuoteRequestItem(payload: LineItemUpdate) {
@@ -65,13 +59,11 @@ export class QuoteRequestEditPageComponent implements OnInit, OnDestroy {
   submitQuoteRequest() {
     this.quotingFacade.submitQuoteRequest();
     this.router.navigate([], { queryParams: { submitted: true } });
-    this.submitted = true;
   }
 
   updateSubmitQuoteRequest(payload: { displayName?: string; description?: string }) {
     this.quotingFacade.updateSubmitQuoteRequest(payload);
     this.router.navigate([], { queryParams: { submitted: true } });
-    this.submitted = true;
   }
 
   copyQuote() {
