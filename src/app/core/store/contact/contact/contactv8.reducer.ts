@@ -1,5 +1,6 @@
-import { ContactAction, ContactActionTypes } from './contact.actions';
+import { Action, createReducer, on } from '@ngrx/store';
 
+import * as actions from './contactv8.actions';
 export interface ContactState {
   subjects: string[];
   loading: boolean;
@@ -11,54 +12,40 @@ export const initialState: ContactState = {
   loading: false,
   success: undefined,
 };
-
-export function contactReducer(state = initialState, action: ContactAction): ContactState {
-  switch (action.type) {
-    case ContactActionTypes.LoadContact: {
-      return {
-        ...state,
-        loading: true,
-        success: undefined,
-      };
-    }
-    case ContactActionTypes.LoadContactFail: {
-      return {
-        ...state,
-        loading: false,
-        success: undefined,
-      };
-    }
-    case ContactActionTypes.LoadContactSuccess: {
-      const { subjects } = action.payload;
-      return {
-        ...state,
-        subjects,
-        loading: false,
-        success: undefined,
-      };
-    }
-    case ContactActionTypes.CreateContact: {
-      return {
-        ...state,
-        loading: true,
-        success: undefined,
-      };
-    }
-    case ContactActionTypes.CreateContactFail: {
-      return {
-        ...state,
-        loading: false,
-        success: false,
-      };
-    }
-    case ContactActionTypes.CreateContactSuccess: {
-      return {
-        ...state,
-        loading: false,
-        success: true,
-      };
-    }
-  }
-
-  return state;
+const contactReducerV8 = createReducer(
+  initialState,
+  on(actions.loadContact, state => ({
+    ...state,
+    loading: true,
+    success: undefined,
+  })),
+  on(actions.loadContactFail, state => ({
+    ...state,
+    loading: false,
+    success: undefined,
+  })),
+  on(actions.loadContactSuccess, (state, { subjects }) => ({
+    ...state,
+    subjects,
+    loading: false,
+    success: undefined,
+  })),
+  on(actions.createContact, state => ({
+    ...state,
+    loading: true,
+    success: undefined,
+  })),
+  on(actions.createContactFail, state => ({
+    ...state,
+    loading: false,
+    success: false,
+  })),
+  on(actions.createContactSuccess, state => ({
+    ...state,
+    loading: false,
+    success: true,
+  }))
+);
+export function contactReducer(state = initialState, action: Action): ContactState {
+  return contactReducerV8(state, action);
 }

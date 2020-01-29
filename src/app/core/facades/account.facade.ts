@@ -18,11 +18,11 @@ import {
   getAllAddresses,
 } from 'ish-core/store/addresses';
 import {
-  CreateContact,
-  LoadContact,
+  createContact,
   getContactLoading,
   getContactSubjects,
   getContactSuccess,
+  loadContact,
 } from 'ish-core/store/contact/contact';
 import { LoadOrders, getOrders, getOrdersLoading, getSelectedOrder } from 'ish-core/store/orders';
 import {
@@ -168,16 +168,16 @@ export class AccountFacade {
 
   // CONTACT US
   contactSubjects$() {
-    this.store.dispatch(new LoadContact());
+    this.store.dispatch(loadContact());
     return this.store.pipe(select(getContactSubjects));
   }
   contactLoading$ = this.store.pipe(select(getContactLoading));
   contactSuccess$ = this.store.pipe(select(getContactSuccess));
 
   resetContactState() {
-    this.store.dispatch(new LoadContact());
+    this.store.dispatch(loadContact());
   }
   createContact(contact: Contact) {
-    this.store.dispatch(new CreateContact({ contact }));
+    this.store.dispatch(createContact({ contact }));
   }
 }
