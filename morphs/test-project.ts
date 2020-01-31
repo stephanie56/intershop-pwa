@@ -1,15 +1,14 @@
-import { Project, SyntaxKind } from 'ts-morph';
+import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 
 const storeName = 'contact';
 const project = new Project({
   tsConfigFilePath: 'D:/projects/pwa-github/tsconfig.json',
 });
-const test = project.getSourceFile('contactv8.actions.ts');
-console.log(test.getVariableStatements()[0].getStructure());
-
+// read actions source file
 const actionsFile = project.getSourceFile(`${storeName}.actions.ts`);
 const actionTypes = readActionTypes();
 console.log(actionTypes);
+
 replaceActions();
 project.save();
 
@@ -46,18 +45,33 @@ function replaceActions() {
     console.log(constructorContents);
 
     // assemble structure object
-    // TODO
-
-    /* const createActionStructure = {
+    const createActionStructure = {
       isExported: true,
+      isDefaultExport: false,
+      hasDeclareKeyword: false,
+      docs: [],
+      kind: 39,
       declarationKind: VariableDeclarationKind.Const,
       declarations: [
         {
-          name: kebabCase(className),
-          initializer: "createAction('[Contact Internal] Load Contact Subjects')",
+          name: className.charAt(0).toLowerCase() + className.substr(1),
+          initializer: hasConstructor
+            ? `createAction(${typeString}, props<${constructorContents}>())`
+            : `createAction(${typeString})`,
+          type: undefined,
+          hasExclamationToken: false,
+          kind: 38,
         },
       ],
     };
-    actionsFile.addVariableStatement(createActionStructure); */
+    // add variable statement to file
+    actionsFile.addVariableStatement(createActionStructure);
+    // remove class from file
+    actionClass.remove();
   });
+  // clean up old code
+  actionsFile.getEnums()[0].remove();
+  actionsFile.getTypeAliases()[0].remove();
+  actionsFile.fixMissingImports();
+  actionsFile.fixUnusedIdentifiers();
 }
