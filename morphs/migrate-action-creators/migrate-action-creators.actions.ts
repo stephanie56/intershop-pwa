@@ -15,11 +15,10 @@ export function readActionTypes(actionsFile: SourceFile) {
 }
 
 export function replaceActions(actionsFile: SourceFile, actionTypes: { [typeName: string]: string }) {
-  console.log('replacing Action Classes with creator Functions...');
+  console.log('replacing action classes with creator functions...');
   actionsFile.getClasses().forEach(actionClass => {
     // retrieve basic action information
     const className = actionClass.getName();
-    console.log(`Class name: ${className}`);
     const typeString = actionTypes[className];
     // get constructor information
     const hasConstructor = actionClass.getConstructors().length > 0;
@@ -30,7 +29,6 @@ export function replaceActions(actionsFile: SourceFile, actionTypes: { [typeName
           .getFirstChildByKind(SyntaxKind.TypeLiteral)
           .getText()
       : '';
-    console.log(constructorContents);
 
     // assemble structure object
     const createActionStructure = {
