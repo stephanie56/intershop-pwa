@@ -1,18 +1,6 @@
-import { Project, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
+import { SourceFile, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 
-const storeName = 'contact';
-const project = new Project({
-  tsConfigFilePath: 'D:/projects/pwa-github/tsconfig.json',
-});
-// read actions source file
-const actionsFile = project.getSourceFile(`${storeName}.actions.ts`);
-const actionTypes = readActionTypes();
-console.log(actionTypes);
-
-replaceActions();
-project.save();
-
-function readActionTypes() {
+export function readActionTypes(actionsFile: SourceFile) {
   console.log('reading action types...');
   return actionsFile
     .getEnums()[0]
@@ -26,7 +14,7 @@ function readActionTypes() {
     );
 }
 
-function replaceActions() {
+export function replaceActions(actionsFile: SourceFile, actionTypes: { [typeName: string]: string }) {
   console.log('replacing Action Classes with creator Functions...');
   actionsFile.getClasses().forEach(actionClass => {
     // retrieve basic action information
