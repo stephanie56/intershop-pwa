@@ -1,7 +1,7 @@
 import { Project } from 'ts-morph';
 
-import { readActionTypes, replaceActions } from './migrate-action-creators.actions';
-import { replaceReducer } from './migrate-action-creators.reducers';
+import { ActionCreatorsActionsMorpher } from './migrate-action-creators.actions';
+import { ActionCreatorsReducerMorpher } from './migrate-action-creators.reducers';
 
 const storeName = 'contact';
 const project = new Project({
@@ -9,11 +9,10 @@ const project = new Project({
 });
 
 // migrate actions
-const actionsFile = project.getSourceFile(`${storeName}.actions.ts`);
-const actionTypes = readActionTypes(actionsFile);
-replaceActions(actionsFile, actionTypes);
+const actionMorph = new ActionCreatorsActionsMorpher(project.getSourceFile(`${storeName}.actions.ts`));
+actionMorph.replaceActions();
 
 // migrate reducer
-const reducerFile = project.getSourceFile(`${storeName}.reducer.ts`);
-replaceReducer(storeName, reducerFile);
+const reducerMorph = new ActionCreatorsReducerMorpher(storeName, project.getSourceFile(`${storeName}.reducer.ts`));
+reducerMorph.migrateReducer();
 project.save();
