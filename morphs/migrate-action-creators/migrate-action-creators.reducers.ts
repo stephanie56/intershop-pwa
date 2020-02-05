@@ -68,16 +68,11 @@ export class ActionCreatorsReducerMorpher {
 
   private addImports() {
     this.reducerFile.addImportDeclaration({
-      kind: 14,
-      defaultImport: undefined,
       moduleSpecifier: '@ngrx/store',
       namedImports: ['on'],
     });
     this.reducerFile.addImportDeclaration({
-      kind: 14,
-      defaultImport: undefined,
       moduleSpecifier: `./${this.storeName}.actions`,
-      namedImports: [],
       namespaceImport: `${this.storeName}Actions`,
     });
   }
@@ -93,9 +88,6 @@ export class ActionCreatorsReducerMorpher {
       .getFirstChildByKindOrThrow(SyntaxKind.Block)
       .getStatements()
       .forEach(statement => statement.remove());
-    this.reducerFile
-      .getFunction(`${this.storeName}Reducer`)
-      .getFirstChildByKindOrThrow(SyntaxKind.Block)
-      .addStatements([`return reducer(state,action)`]);
+    this.reducerFile.getFunction(`${this.storeName}Reducer`).setBodyText('return reducer(state,action)');
   }
 }

@@ -1,7 +1,15 @@
 import { Project } from 'ts-morph';
 
 import { ActionCreatorsActionsMorpher } from './migrate-action-creators.actions';
+import { ActionCreatorsEffectMorpher } from './migrate-action-creators.effects';
 import { ActionCreatorsReducerMorpher } from './migrate-action-creators.reducers';
+
+const control = {
+  actions: false,
+  reducer: false,
+  effects: true,
+};
+const save = false;
 
 const storeName = 'contact';
 const project = new Project({
@@ -10,9 +18,14 @@ const project = new Project({
 
 // migrate actions
 const actionMorph = new ActionCreatorsActionsMorpher(project.getSourceFile(`${storeName}.actions.ts`));
-actionMorph.replaceActions();
+control.actions ? actionMorph.replaceActions() : null;
 
 // migrate reducer
 const reducerMorph = new ActionCreatorsReducerMorpher(storeName, project.getSourceFile(`${storeName}.reducer.ts`));
-reducerMorph.migrateReducer();
-project.save();
+control.reducer ? reducerMorph.migrateReducer() : null;
+
+// migrate effects
+const effectsMorph = new ActionCreatorsEffectMorpher(project.getSourceFile(`${storeName}.effects.ts`));
+control.effects ? effectsMorph.migrateEffects() : null;
+
+save ? project.save() : null;
