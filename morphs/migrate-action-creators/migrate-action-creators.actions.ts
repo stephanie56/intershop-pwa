@@ -26,8 +26,8 @@ export function replaceActions(actionsFile: SourceFile, actionTypes: { [typeName
       ? actionClass
           .getConstructors()[0]
           .getParameter('payload')
-          .getFirstChildByKind(SyntaxKind.TypeLiteral)
           .getText()
+          .replace('public ', '')
       : '';
 
     // assemble structure object
@@ -42,7 +42,7 @@ export function replaceActions(actionsFile: SourceFile, actionTypes: { [typeName
         {
           name: className.charAt(0).toLowerCase() + className.substr(1),
           initializer: hasConstructor
-            ? `createAction(${typeString}, props<${constructorContents}>())`
+            ? `createAction(${typeString}, props<{${constructorContents}}>())`
             : `createAction(${typeString})`,
           type: undefined,
           hasExclamationToken: false,

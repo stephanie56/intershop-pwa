@@ -2,7 +2,7 @@ import { SourceFile, SyntaxKind, VariableDeclarationKind } from 'ts-morph';
 
 export function replaceReducer(storeName: string, reducerFile: SourceFile) {
   console.log('replacing reducers...');
-  addStarImport(storeName, reducerFile);
+  addImports(storeName, reducerFile);
   // retrieve reducer logic from old reducer
   const switchStatements = [];
   reducerFile
@@ -16,18 +16,10 @@ export function replaceReducer(storeName: string, reducerFile: SourceFile) {
           .getFirstChildByKindOrThrow(SyntaxKind.Block)
           .getStatements()[0]
           .getKind() !== SyntaxKind.ReturnStatement;
-      // if payload is used, retrieve the object binding
-      const objectBinding = hasLogic
-        ? clause
-            .getFirstChildByKindOrThrow(SyntaxKind.Block)
-            .getFirstDescendantByKind(SyntaxKind.ObjectBindingPattern)
-            .getText()
-        : undefined;
       // push information about switch statement to array
       switchStatements.push({
         identifier: clause.getFirstChildByKindOrThrow(SyntaxKind.PropertyAccessExpression).getName(),
         hasLogic,
-        objectBinding,
         block: clause.getFirstChildByKindOrThrow(SyntaxKind.Block).getText(),
       });
     });
@@ -57,14 +49,22 @@ export function replaceReducer(storeName: string, reducerFile: SourceFile) {
   switchStatements.forEach(statement => {
     // name of the actionCreator function
     const type = statement.identifier.charAt(0).toLowerCase() + statement.identifier.substr(1);
-    const arrowFunction = statement.hasLogic
-      ? `(state, ${statement.objectBinding}) => ${statement.block}` // TODO: Use RegExp to remove first line
-      : `state => ${statement.block}`;
-    createReducerFunction.addArgument(`on(${type}, ${arrowFunction})`);
+    const arrowFunction = statement.hasLogic ? `(state, action) => ${statement.block}` : `state => ${statement.block}`;
+    createReducerFunction.addArgument(`on(${storeName}Actions.${type}, ${arrowFunction})`);
   });
+
+  updateFeatureReducer(storeName, reducerFile);
+  reducerFile.fixMissingImports();
+  reducerFile.fixUnusedIdentifiers();
 }
 
-function addStarImport(storeName: string, reducerFile: SourceFile) {
+function addImports(storeName: string, reducerFile: SourceFile) {
+  reducerFile.addImportDeclaration({
+    kind: 14,
+    defaultImport: undefined,
+    moduleSpecifier: '@ngrx/store',
+    namedImports: ['on'],
+  });
   reducerFile.addImportDeclaration({
     kind: 14,
     defaultImport: undefined,
@@ -77,12 +77,16 @@ function addStarImport(storeName: string, reducerFile: SourceFile) {
 function updateFeatureReducer(storeName: string, reducerFile: SourceFile) {
   reducerFile
     .getFunction(`${storeName}Reducer`)
-    .getFirstChildByKindOrThrow(SyntaxKind.Block)
-    .getStatements()
-    .forEach(statement => statement.remove());
-  // TODO: add return statement referencing the new reducer
+    .getParameter('action')
+    .remove();
+  reducerFile.getFunction(`${storeName}Reducer`).addParameter({ name: 'action', type: 'Action' });
   reducerFile
     .getFunction(`${storeName}Reducer`)
     .getFirstChildByKindOrThrow(SyntaxKind.Block)
-    .addStatements([]);
+    .getStatements()
+    .forEach(statement => statement.remove());
+  reducerFile
+    .getFunction(`${storeName}Reducer`)
+    .getFirstChildByKindOrThrow(SyntaxKind.Block)
+    .addStatements([`return reducer(state,action)`]);
 }

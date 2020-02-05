@@ -5,7 +5,7 @@ import { replaceReducer } from './migrate-action-creators.reducers';
 
 const storeName = 'contact';
 const project = new Project({
-  tsConfigFilePath: 'D:/projects/pwa-github/tsconfig.json',
+  tsConfigFilePath: 'E:/Projects/pwa-github/tsconfig.json',
 });
 
 // migrate actions
