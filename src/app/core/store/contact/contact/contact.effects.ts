@@ -17,7 +17,7 @@ export class ContactEffects {
    */
   @Effect()
   loadSubjects$ = this.actions$.pipe(
-    ofType(ContactActions.ContactActionTypes.LoadContact),
+    ofType<ContactActions.LoadContact>(ContactActions.ContactActionTypes.LoadContact),
     concatMap(() =>
       this.contactService.getContactSubjects().pipe(
         map(subjects => new ContactActions.LoadContactSuccess({ subjects })),
@@ -31,7 +31,7 @@ export class ContactEffects {
    */
   @Effect()
   createContact$ = this.actions$.pipe(
-    ofType(ContactActions.ContactActionTypes.CreateContact),
+    ofType<ContactActions.CreateContact>(ContactActions.ContactActionTypes.CreateContact),
     mapToPayloadProperty('contact'),
     concatMap(contact =>
       this.contactService.createContactRequest(contact).pipe(
