@@ -5,8 +5,8 @@ import { ActionCreatorsEffectMorpher } from './migrate-action-creators.effects';
 import { ActionCreatorsReducerMorpher } from './migrate-action-creators.reducers';
 
 const control = {
-  actions: true,
-  reducer: true,
+  actions: false,
+  reducer: false,
   effects: true,
 };
 const save = true;

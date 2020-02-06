@@ -26,6 +26,7 @@ export class ActionCreatorsEffectMorpher {
         let logic = effect.getFirstChildByKindOrThrow(SyntaxKind.CallExpression);
         // update effect logic
         logic = this.updateOfType(logic);
+        logic = this.updateMap(logic);
         // add new updated property declaration
         const newEffect = this.effectsFile.getClasses()[0].addProperty({
           name,
@@ -43,17 +44,26 @@ export class ActionCreatorsEffectMorpher {
       .forEach(exp => {
         if (exp) {
           // remove Type Argument and update actionType
-          const argument = exp.getFirstChildByKind(SyntaxKind.PropertyAccessExpression);
+          const argument = exp.getArguments()[0];
           exp.removeTypeArgument(exp.getFirstChildByKind(SyntaxKind.TypeReference));
-          exp.addArgument(
-            `${this.storeName}Actions.${argument
-              .getLastChildByKind(SyntaxKind.Identifier)
-              .getText()
-              .replace(/^\w/, c => c.toLowerCase())}`
-          );
+          const t = argument.getLastChildByKind(SyntaxKind.Identifier) || argument;
+          exp.addArgument(`${this.storeName}Actions.${t.getText().replace(/^\w/, c => c.toLowerCase())}`);
           exp.removeArgument(argument);
         }
       });
     return pipe;
+  }
+
+  private updateMap(pipe: CallExpression): CallExpression {
+    const lastCall = pipe.getLastChildByKind(SyntaxKind.CallExpression);
+    if (this.isMap(lastCall.getFirstChildByKind(SyntaxKind.Identifier).getText())) {
+      console.log(lastCall.getFirstChildByKind(SyntaxKind.Identifier).getText());
+      return pipe;
+    }
+    return pipe;
+  }
+
+  private isMap(identifier: string) {
+    return identifier === 'map' || 'concatMap' || 'mergeMap' || 'switchMap' || 'mapTo';
   }
 }
