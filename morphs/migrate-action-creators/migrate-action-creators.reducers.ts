@@ -58,7 +58,7 @@ export class ActionCreatorsReducerMorpher {
     // for each switch case, add a new on()-function
     switchStatements.forEach(statement => {
       // name of the actionCreator function
-      const type = statement.identifier.charAt(0).toLowerCase() + statement.identifier.substr(1);
+      const type = statement.identifier.replace(/^\w/, c => c.toLowerCase());
       const arrowFunction = statement.hasLogic
         ? `(state, action) => ${statement.block}`
         : `state => ${statement.block}`;

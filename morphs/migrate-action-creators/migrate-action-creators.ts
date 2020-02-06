@@ -5,11 +5,11 @@ import { ActionCreatorsEffectMorpher } from './migrate-action-creators.effects';
 import { ActionCreatorsReducerMorpher } from './migrate-action-creators.reducers';
 
 const control = {
-  actions: false,
-  reducer: false,
+  actions: true,
+  reducer: true,
   effects: true,
 };
-const save = false;
+const save = true;
 
 const storeName = 'contact';
 const project = new Project({
@@ -18,14 +18,14 @@ const project = new Project({
 
 // migrate actions
 const actionMorph = new ActionCreatorsActionsMorpher(project.getSourceFile(`${storeName}.actions.ts`));
-control.actions ? actionMorph.replaceActions() : null;
+control.actions ? actionMorph.migrateActions() : null;
 
 // migrate reducer
 const reducerMorph = new ActionCreatorsReducerMorpher(storeName, project.getSourceFile(`${storeName}.reducer.ts`));
 control.reducer ? reducerMorph.migrateReducer() : null;
 
 // migrate effects
-const effectsMorph = new ActionCreatorsEffectMorpher(project.getSourceFile(`${storeName}.effects.ts`));
+const effectsMorph = new ActionCreatorsEffectMorpher(storeName, project.getSourceFile(`${storeName}.effects.ts`));
 control.effects ? effectsMorph.migrateEffects() : null;
 
 save ? project.save() : null;

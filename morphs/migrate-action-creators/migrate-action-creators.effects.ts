@@ -1,12 +1,16 @@
 import { CallExpression, SourceFile, SyntaxKind } from 'ts-morph';
 
 export class ActionCreatorsEffectMorpher {
-  constructor(public effectsFile: SourceFile) {}
+  constructor(public storeName: string, public effectsFile: SourceFile) {}
 
   private addImportStatements() {
     this.effectsFile.addImportDeclaration({
       moduleSpecifier: '@ngrx/store',
       namedImports: ['createEffect'],
+    });
+    this.effectsFile.addImportDeclaration({
+      moduleSpecifier: `./${this.storeName}.actions`,
+      namespaceImport: `${this.storeName}Actions`,
     });
   }
 
@@ -19,24 +23,37 @@ export class ActionCreatorsEffectMorpher {
       .forEach(effect => {
         // retrieve information from effect
         const name = effect.getFirstChildByKindOrThrow(SyntaxKind.Identifier).getText();
-        const logic = effect.getFirstChildByKindOrThrow(SyntaxKind.CallExpression);
+        let logic = effect.getFirstChildByKindOrThrow(SyntaxKind.CallExpression);
+        // update effect logic
+        logic = this.updateOfType(logic);
         // add new updated property declaration
         const newEffect = this.effectsFile.getClasses()[0].addProperty({
           name,
           initializer: `createEffect(() => ${logic.getText()})`,
         });
-        newEffect
-          .getFirstDescendantByKindOrThrow(SyntaxKind.ArrowFunction)
-          .getFirstChildByKind(SyntaxKind.CallExpression)
-          // get pipe functions
-          .getChildrenOfKind(SyntaxKind.CallExpression)
-          .filter(exp => exp.getFirstChildByKind(SyntaxKind.Identifier).getText() === 'ofType')
-          .forEach(exp => {
-            if (exp) {
-              console.log(exp.getFirstChildByKind(SyntaxKind.TypeReference).getText());
-            }
-          });
         effect.remove();
       });
+  }
+
+  private updateOfType(pipe: CallExpression): CallExpression {
+    pipe
+      // get piped functions
+      .getChildrenOfKind(SyntaxKind.CallExpression)
+      .filter(exp => exp.getFirstChildByKind(SyntaxKind.Identifier).getText() === 'ofType')
+      .forEach(exp => {
+        if (exp) {
+          // remove Type Argument and update actionType
+          const argument = exp.getFirstChildByKind(SyntaxKind.PropertyAccessExpression);
+          exp.removeTypeArgument(exp.getFirstChildByKind(SyntaxKind.TypeReference));
+          exp.addArgument(
+            `${this.storeName}Actions.${argument
+              .getLastChildByKind(SyntaxKind.Identifier)
+              .getText()
+              .replace(/^\w/, c => c.toLowerCase())}`
+          );
+          exp.removeArgument(argument);
+        }
+      });
+    return pipe;
   }
 }

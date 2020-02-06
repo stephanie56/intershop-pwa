@@ -5,6 +5,15 @@ export class ActionCreatorsActionsMorpher {
 
   constructor(public actionsFile: SourceFile) {}
 
+  migrateActions() {
+    this.readActionTypes();
+    this.replaceActions();
+    // clean up old code
+    this.actionsFile.getEnums()[0].remove();
+    this.actionsFile.getTypeAliases()[0].remove();
+    this.actionsFile.fixMissingImports();
+    this.actionsFile.fixUnusedIdentifiers();
+  }
   private readActionTypes() {
     console.log('reading action types...');
     this.actionTypes = this.actionsFile
@@ -19,8 +28,7 @@ export class ActionCreatorsActionsMorpher {
       );
   }
 
-  replaceActions() {
-    this.readActionTypes();
+  private replaceActions() {
     console.log('replacing action classes with creator functions...');
     this.actionsFile.getClasses().forEach(actionClass => {
       // retrieve basic action information
@@ -41,12 +49,10 @@ export class ActionCreatorsActionsMorpher {
         isExported: true,
         isDefaultExport: false,
         hasDeclareKeyword: false,
-        docs: [],
-        kind: 39,
         declarationKind: VariableDeclarationKind.Const,
         declarations: [
           {
-            name: className.charAt(0).toLowerCase() + className.substr(1),
+            name: className.replace(/^\w/, c => c.toLowerCase()),
             initializer: hasConstructor
               ? `createAction(${typeString}, props<{${constructorContents}}>())`
               : `createAction(${typeString})`,
@@ -61,10 +67,5 @@ export class ActionCreatorsActionsMorpher {
       // remove class from file
       actionClass.remove();
     });
-    // clean up old code
-    this.actionsFile.getEnums()[0].remove();
-    this.actionsFile.getTypeAliases()[0].remove();
-    this.actionsFile.fixMissingImports();
-    this.actionsFile.fixUnusedIdentifiers();
   }
 }
