@@ -5,9 +5,9 @@ import { ActionCreatorsEffectMorpher } from './migrate-action-creators.effects';
 import { ActionCreatorsReducerMorpher } from './migrate-action-creators.reducers';
 
 const control = {
-  actions: false,
+  actions: true,
   reducer: false,
-  effects: true,
+  effects: false,
 };
 const save = true;
 
