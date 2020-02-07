@@ -84,12 +84,14 @@ export class ActionCreatorsActionsMorpher {
           .includes('spec.ts') &&
         reference.getSourceFile() !== this.actionsFile
       ) {
-        const newExpression = reference.getFirstAncestor(ancestor => ancestor.getKind() === SyntaxKind.NewExpression);
-        // update new Expressions
+        const newExpression = reference.getFirstAncestor(
+          ancestor => ancestor.getKind() === SyntaxKind.NewExpression
+        ) as NewExpression;
+        // update "new"-expressions
         if (newExpression) {
           // swap new class instantiation to actionCreator call
-          const hasArgument = newExpression.forEachChildAsArray().length > 1;
-          const argument = hasArgument ? newExpression.forEachChildAsArray()[1].getText() : '';
+          const hasArgument = newExpression.getArguments().length > 1;
+          const argument = hasArgument ? newExpression.getArguments()[1].getText() : '';
           // update dispatch calls
           if (
             newExpression.getParent().getKind() === SyntaxKind.CallExpression &&
