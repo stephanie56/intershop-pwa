@@ -48,11 +48,12 @@ describe('Quote Handling as Anonymous User', () => {
         dialog.submitQuoteRequest();
         dialog.productId.eq(0).should('contain', _.product.sku);
         dialog.quoteState.should('have.text', 'Submitted');
+        dialog.hide();
       });
     });
 
     it('user should log out', () => {
-      at(QuoteDetailPage, page => page.header.logout());
+      at(ProductDetailPage, page => page.header.logout());
       at(HomePage);
     });
   });
