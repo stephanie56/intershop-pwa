@@ -14,17 +14,7 @@ import { ProductMasterVariationsComponent } from './product-master-variations/pr
 import { ProductPageComponent } from './product-page.component';
 import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.component';
 
-const productPageRoutes: Routes = [
-  {
-    path: ':sku',
-    children: [
-      {
-        path: '**',
-        component: ProductPageComponent,
-      },
-    ],
-  },
-];
+const productPageRoutes: Routes = [{ path: '**', component: ProductPageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(productPageRoutes), SharedModule],

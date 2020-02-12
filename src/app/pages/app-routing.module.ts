@@ -32,11 +32,6 @@ const routes: Routes = [
     },
   },
   {
-    path: 'product',
-    loadChildren: () => import('./product/product-page.module').then(m => m.ProductPageModule),
-    canActivate: [MetaGuard],
-  },
-  {
     path: 'category',
     loadChildren: () => import('./category/category-page.module').then(m => m.CategoryPageModule),
     canActivate: [MetaGuard],

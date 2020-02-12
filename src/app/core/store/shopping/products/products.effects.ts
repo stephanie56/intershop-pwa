@@ -23,6 +23,7 @@ import { ProductListingMapper } from 'ish-core/models/product-listing/product-li
 import { VariationProductMaster } from 'ish-core/models/product/product-variation-master.model';
 import { VariationProduct } from 'ish-core/models/product/product-variation.model';
 import { Product, ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { productRouteFormat } from 'ish-core/routing/product/product.route';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { LoadCategory } from 'ish-core/store/shopping/categories';
 import { SetProductListingPages } from 'ish-core/store/shopping/product-listing';
@@ -32,6 +33,7 @@ import {
   mapToPayload,
   mapToPayloadProperty,
   mapToProperty,
+  whenFalsy,
   whenTruthy,
 } from 'ish-core/utils/operators';
 
@@ -214,7 +216,9 @@ export class ProductsEffects {
 
   @Effect()
   loadDefaultCategoryContextForProduct$ = this.actions$.pipe(
-    ofRoute(/^product/),
+    ofRoute(productRouteFormat),
+    mapToParam('categoryUniqueId'),
+    whenFalsy(),
     switchMap(() =>
       this.store.pipe(
         select(productsSelectors.getSelectedProduct),
