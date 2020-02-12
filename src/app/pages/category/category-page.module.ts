@@ -11,16 +11,7 @@ import { CategoryPageComponent } from './category-page.component';
 import { CategoryProductsComponent } from './category-products/category-products.component';
 import { CategoryTileComponent } from './category-tile/category-tile.component';
 
-const categoryPageRoutes: Routes = [
-  {
-    path: ':categoryUniqueId',
-    component: CategoryPageComponent,
-  },
-  {
-    path: ':categoryUniqueId/product',
-    loadChildren: () => import('../product/product-page.module').then(m => m.ProductPageModule),
-  },
-];
+const categoryPageRoutes: Routes = [{ path: '**', component: CategoryPageComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(categoryPageRoutes), SharedModule],

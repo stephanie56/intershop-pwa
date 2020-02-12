@@ -9,6 +9,7 @@ import { debounce, distinctUntilKeyChanged, first, map, switchMap, tap } from 'r
 
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 import { SeoAttributes } from 'ish-core/models/seo-attribute/seo-attribute.model';
+import { categoryRouteFormat } from 'ish-core/routing/category/category.route';
 import { generateProductUrl, productRouteFormat } from 'ish-core/routing/product/product.route';
 import { getSelectedContentPage } from 'ish-core/store/content/pages';
 import { CategoriesActionTypes } from 'ish-core/store/shopping/categories';
@@ -55,7 +56,7 @@ export class SeoEffects {
 
   @Effect()
   seoCategory$ = this.actions$.pipe(
-    ofRoute('category/:categoryUniqueId'),
+    ofRoute(categoryRouteFormat),
     debounce(() => this.actions$.pipe(ofType(CategoriesActionTypes.SelectedCategoryAvailable))),
     switchMap(() =>
       this.store.pipe(

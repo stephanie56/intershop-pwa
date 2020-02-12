@@ -2,6 +2,7 @@ import { UrlMatchResult, UrlSegment } from '@angular/router';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 
 function generateProductSlug(product: ProductView) {
   return product && product.name ? product.name.replace(/[^a-zA-Z0-9-]+/g, '-').replace(/-+$/g, '') : undefined;
@@ -38,10 +39,7 @@ export function generateProductUrl(product: ProductView, category?: CategoryView
   let route = '/';
 
   if (contextCategory) {
-    route += contextCategory
-      .pathCategories()
-      .map(cat => cat.name.replace(/ /g, '-'))
-      .join('/');
+    route += generateLocalizedCategorySlug(contextCategory);
     route += '/';
   }
 
